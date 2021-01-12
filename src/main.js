@@ -12,6 +12,7 @@ import Qs from 'qs'
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 import util from './assets/js/util'
+Vue.prototype.$axios = axios
 
 Vue.use(ElementUI)
 Vue.component('icon', Icon)
