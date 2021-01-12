@@ -37,7 +37,7 @@
   <div class="login">
     <canvas id="canvas"></canvas>
     <div class="login-box">
-      <h2 class="login-box-title">CMS系统</h2>
+      <h2 class="login-box-title">南瓜短视频后台管理系统</h2>
       <el-form :model="login" :rules="rules" ref="login">
         <el-row type="flex" justify="center">
           <el-col :span="18">
@@ -51,16 +51,6 @@
             <el-form-item prop="password">
               <el-input v-model="login.password" size="large" placeholder="密码" type="password"></el-input>
             </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row type="flex" justify="center">
-          <el-col :span="12">
-            <el-form-item prop="captcha">
-              <el-input v-model="login.captcha" placeholder="验证码"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-              <img class="captcha" src="" alt="验证码不见了">
           </el-col>
         </el-row>
       </el-form>
@@ -110,7 +100,7 @@
         setTimeout(()=>{
           util.authcode='123456'
           util.setSession('authcode',util.authcode)
-          this.$router.push('/layout/index')
+          this.$router.push('/layout/user')
           this.loading = true
         },1500)
       }

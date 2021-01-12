@@ -90,7 +90,7 @@
       </el-col>
       <el-col :span="21" class="right">
         <div class="layout-header">
-          <div class="layout-header-title">XXXXXXX管理系统</div>
+          <div class="layout-header-title">南瓜短视频后台管理系统</div>
           <el-dropdown @command="handleCommand">
             <div class="user-info">
               <span class="avatar"></span>
@@ -104,7 +104,7 @@
         <div class="layout-content">
           <router-view></router-view>
           <div class="layout-copy">
-            2015-2017 &copy; Dull
+            2015-2017 &copy; nylgsc
           </div>
         </div>
       </el-col>
@@ -116,27 +116,6 @@
   import myMenu from 'common/Menu'
   import util from '../../assets/js/util'
   export default {
-    data() {
-      return {
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value: ''
-      }
-    },
     components: {
       myMenu
     },

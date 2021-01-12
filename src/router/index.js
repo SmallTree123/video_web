@@ -5,6 +5,8 @@ import Layout from 'common/Layout'
 import Index from 'page/Index'
 import User from 'page/User'
 import Role from 'page/Role'
+import Tag from 'page/Tag'
+import ViolationsVideo from 'page/ViolationsVideo'
 
 Vue.use(Router);
 
@@ -17,6 +19,8 @@ export default new Router({
       {path: 'index', component: Index},
       {path: 'user', component: User},
       {path: 'role', component: Role},
+      {path: 'tag', component: Tag},
+      {path: 'violationsVideo', component: ViolationsVideo},
 
     ]}
   ]

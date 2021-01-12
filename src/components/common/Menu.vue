@@ -43,8 +43,8 @@
           <el-menu-item index="/layout/user">用户管理</el-menu-item>
           <el-menu-item index="/layout/role">角色管理</el-menu-item>
         </el-submenu>
-        <el-menu-item index="/layout/user"><icon name="dashboard"></icon>标签管理</el-menu-item>
-        <el-menu-item index="/layout/user"><icon name="dashboard"></icon>违规视频审核</el-menu-item>
+        <el-menu-item index="/layout/tag"><icon name="dashboard"></icon>标签管理</el-menu-item>
+        <el-menu-item index="/layout/violationsVideo"><icon name="dashboard"></icon>违规视频审核</el-menu-item>
       </div>
     </el-menu>
   </div>
