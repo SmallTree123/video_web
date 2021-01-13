@@ -21,18 +21,14 @@
           <label>手机号</label>
           <el-input style="width: 10%" placeholder="请输入手机号" prefix-icon="el-icon-search" v-model="input4"/>
 
-          <el-button style="width: 10%;margin-left: 10px" type="primary" round>搜索</el-button>
+          <el-button @click="zhf" style="width: 10%;margin-left: 10px" type="primary" round>搜索</el-button>
         </div>
 
 
         <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"/>
-          <el-table-column label="日期" width="120">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
-          </el-table-column>
-          <el-table-column prop="name" label="姓名" width="120"/>
-          <el-table-column prop="address" label="地址" show-overflow-tooltip/>
-          <el-table-column prop="phone" label="手机号" show-overflow-tooltip/>
+          <el-table-column prop="id" label="编号" width="120"/>
+          <el-table-column prop="name" label="姓名" show-overflow-tooltip/>
         </el-table>
       </template>
     </div>
@@ -43,48 +39,34 @@
   export default {
     data() {
       return {
-        tableData: [{
-          date: '2016-05-03',
-          name: '王小虎',
-          phone:'18338154519',
-          address: '上海市普陀区金沙江路 1518'
-        }, {
-          date: '2016-05-02',
-          name: '王小虎',
-          phone:'18338154519',
-          address: '上海市普陀区金沙江路 1518 '
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          phone:'18338154519',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          phone:'18338154519',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-08',
-          name: '王小虎',
-          phone:'18338154519',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-06',
-          name: '王小虎',
-          phone:'18338154519',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }, {
-          date: '2016-05-07',
-          name: '王小虎',
-          phone:'18338154519',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }],
-
-        multipleSelection: []
+        tableData: [],
+        multipleSelection: [],
+        input1:'',
+        input2:'',
+        input3:'',
+        input4:'',
       }
     },
-
+   created() {
+    this.zhf();
+   },
     methods: {
+      zhf(){
+        console.log(this.input1+"--"+this.input2+"--"+this.input3+"--"+this.input4);
+        this.$axios.get("http://localhost:8081/tag/queryAllTag", {  //params参数必写 , 如果没有参数传{}也可以
+          params: {
+            id: this.input1,
+            name: this.input2,
+            address: this.input3,
+            phone: this.input4
+          }
+         }).then(res => {
+              this.tableData = res.data.data;
+         }).catch(res =>{
+              alert("出错了")
+        })
+      },
+
       toggleSelection(rows) {
         if (rows) {
 
