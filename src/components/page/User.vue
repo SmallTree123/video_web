@@ -12,23 +12,30 @@
     <div class="main">
       <template>
         <div style="margin-bottom: 20px;margin-top: 20px;margin-left: 20px">
-          <label style="margin: auto">姓名</label>
-          <el-input style="width: 10%" placeholder="请输入姓名" prefix-icon="el-icon-search" v-model="input1"/>
-          <label>地址</label>
-          <el-input style="width: 10%" placeholder="请输入地址" prefix-icon="el-icon-search" v-model="input2"/>
-          <label>日期</label>
-          <el-input style="width: 10%" placeholder="请输入日期" prefix-icon="el-icon-search" v-model="input3"/>
-          <label>手机号</label>
-          <el-input style="width: 10%" placeholder="请输入手机号" prefix-icon="el-icon-search" v-model="input4"/>
-
+          <label style="margin: auto">用户名</label>
+          <el-input style="width: 10%" placeholder="请输入用户名" prefix-icon="el-icon-search" v-model="username"/>
+          <label style="margin: auto;margin-left:30px">昵称</label>
+          <el-input style="width: 10%" placeholder="请输入昵称" prefix-icon="el-icon-search" v-model="nickname"/>
           <el-button @click="zhf" style="width: 10%;margin-left: 10px" type="primary" round>搜索</el-button>
         </div>
 
 
         <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="55"/>
-          <el-table-column prop="id" label="编号" width="120"/>
-          <el-table-column prop="name" label="姓名" show-overflow-tooltip/>
+<!--          <el-table-column prop="id" label="ID" width="120"/>-->
+          <el-table-column prop="username" label="用户名" show-overflow-tooltip/>
+          <el-table-column prop="faceImage" label="头像地址" show-overflow-tooltip/>
+          <el-table-column prop="nickname" label="用户昵称" show-overflow-tooltip/>
+          <el-table-column prop="fansCounts" label="粉丝数" show-overflow-tooltip/>
+          <el-table-column prop="followCounts" label="关注的人数" show-overflow-tooltip/>
+          <el-table-column prop="receiveLikeCounts" label="获赞数" show-overflow-tooltip/>
+
+          <el-table-column fixed="right" label="操作" width="200">
+            <template slot-scope="scope">
+              <el-button @click="update(scope.row)" type="text" size="small">编辑</el-button>
+              <el-button @click="del(scope.row)" type="text" size="small">删除</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </template>
     </div>
@@ -41,10 +48,8 @@
       return {
         tableData: [],
         multipleSelection: [],
-        input1:'',
-        input2:'',
-        input3:'',
-        input4:'',
+        username:'',
+        nickname:'',
       }
     },
    created() {
@@ -52,34 +57,84 @@
    },
     methods: {
       zhf(){
-        console.log(this.input1+"--"+this.input2+"--"+this.input3+"--"+this.input4);
-        this.$axios.get("http://localhost:8081/tag/queryAllTag", {  //params参数必写 , 如果没有参数传{}也可以
-          params: {
-            id: this.input1,
-            name: this.input2,
-            address: this.input3,
-            phone: this.input4
-          }
+        this.$axios.post("http://localhost:8081/user/getAllUser", {  //params参数必写 , 如果没有参数传{}也可以
+            username: this.username,
+            nickname: this.nickname,
          }).then(res => {
               this.tableData = res.data.data;
          }).catch(res =>{
               alert("出错了")
         })
       },
-
-      toggleSelection(rows) {
-        if (rows) {
-
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
+      update() {
+        const h = this.$createElement;
+        this.$msgbox({
+          title: '消息',
+          message: h('p', null, [
+            h('span', null, '内容可以是 '),
+            h('i', { style: 'color: teal' }, 'VNode')
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          beforeClose: (action, instance, done) => {
+            if (action === 'confirm') {
+              instance.confirmButtonLoading = true;
+              instance.confirmButtonText = '执行中...';
+              setTimeout(() => {
+                done();
+                setTimeout(() => {
+                  instance.confirmButtonLoading = false;
+                }, 300);
+              }, 3000);
+            } else {
+              done();
+            }
+          }
+        }).then(action => {
+          this.$message({
+            type: 'warn',
+            message: '出问题了'
           });
-        } else {
-          this.$refs.multipleTable.clearSelection();
-        }
+        });
       },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
+
+
+      del(data) {
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          showClose: true,
+        }).then(() => {
+          this.$axios.delete("http://localhost:8081/user/delUser",{
+            params:{
+              id:data.id
+            }
+          }).then(res =>{
+            //刷新页面
+            this.zhf();
+            this.$message({
+              type: 'success',
+              message: '删除成功!',
+              showClose: true,
+            });
+          }).catch(res =>{
+            this.$message({
+              type: 'error',
+              message: '出错了!',
+              showClose: true,
+            });
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除',
+            showClose: true,
+          });
+        });
       }
+
     }
   }
 </script>

@@ -42,14 +42,14 @@
         <el-row type="flex" justify="center">
           <el-col :span="18">
             <el-form-item prop="username">
-              <el-input v-model="login.username" size="large" placeholder="用户名/手机/邮箱"></el-input>
+              <el-input v-model="login.username" size="large" placeholder="用户名/手机/邮箱"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row type="flex" justify="center">
           <el-col :span="18">
             <el-form-item prop="password">
-              <el-input v-model="login.password" size="large" placeholder="密码" type="password"></el-input>
+              <el-input v-model="login.password" size="large" placeholder="密码" type="password"/>
             </el-form-item>
           </el-col>
         </el-row>

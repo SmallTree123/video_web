@@ -36,13 +36,14 @@
       <div class="navbar-logo"></div>
       <div class="navbar-menu">
         <el-menu-item index="/layout/index"><icon name="dashboard"/>首页</el-menu-item>
-        <el-submenu index="user">
-          <template slot="title">
-            <icon name="user"/>用户
-          </template>
-          <el-menu-item index="/layout/user">用户管理</el-menu-item>
-          <el-menu-item index="/layout/role">角色管理</el-menu-item>
-        </el-submenu>
+<!--        <el-submenu index="user">-->
+<!--          <template slot="title">-->
+<!--            <icon name="user"/>用户-->
+<!--          </template>-->
+<!--          <el-menu-item index="/layout/user">用户管理</el-menu-item>-->
+<!--          <el-menu-item index="/layout/role">角色管理</el-menu-item>-->
+<!--        </el-submenu>-->
+        <el-menu-item index="/layout/user"><icon name="user"/> 用户管理</el-menu-item>
         <el-menu-item index="/layout/tag"><icon name="dashboard"/>标签管理</el-menu-item>
         <el-menu-item index="/layout/violationsVideo"><icon name="dashboard"/>违规视频审核</el-menu-item>
       </div>

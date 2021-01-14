@@ -8,63 +8,21 @@
       <template>
         <div style="margin-bottom: 20px;margin-top: 20px;margin-left: 20px">
           <label style="margin: auto">姓名</label>
-          <el-input
-            style="width: 10%"
-            placeholder="请输入内容"
-            prefix-icon="el-icon-search"
-            v-model="input2">
-          </el-input>
+          <el-input style="width: 10%" placeholder="请输入姓名" prefix-icon="el-icon-search" v-model="input1"/>
           <label>地址</label>
-          <el-input
-            style="width: 10%"
-            placeholder="请输入内容"
-            prefix-icon="el-icon-search"
-            v-model="input2">
-          </el-input>
+          <el-input style="width: 10%" placeholder="请输入地址" prefix-icon="el-icon-search" v-model="input2"/>
           <label>日期</label>
-          <el-input
-            style="width: 10%"
-            placeholder="请输入内容"
-            prefix-icon="el-icon-search"
-            v-model="input2">
-          </el-input>
-          <label>地址</label>
-          <el-input
-            style="width: 10%"
-            placeholder="请输入内容"
-            prefix-icon="el-icon-search"
-            v-model="input2">
-          </el-input>
-
-          <el-button style="width: 10%;margin-left: 10px" type="primary" round>搜索</el-button>
+          <el-input style="width: 10%" placeholder="请输入日期" prefix-icon="el-icon-search" v-model="input3"/>
+          <label>手机号</label>
+          <el-input style="width: 10%" placeholder="请输入手机号" prefix-icon="el-icon-search" v-model="input4"/>
+          <el-button @click="zhf" style="width: 10%;margin-left: 10px" type="primary" round>搜索</el-button>
         </div>
 
 
-        <el-table
-          ref="multipleTable"
-          :data="tableData"
-          tooltip-effect="dark"
-          style="width: 100%"
-          @selection-change="handleSelectionChange">
-          <el-table-column
-            type="selection"
-            width="55">
-          </el-table-column>
-          <el-table-column
-            label="日期"
-            width="120">
-            <template slot-scope="scope">{{ scope.row.date }}</template>
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="姓名"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="address"
-            label="地址"
-            show-overflow-tooltip>
-          </el-table-column>
+        <el-table ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55"/>
+          <el-table-column prop="id" label="编号" width="120"/>
+          <el-table-column prop="name" label="姓名" show-overflow-tooltip/>
         </el-table>
       </template>
     </div>
@@ -73,10 +31,39 @@
 
 <script>
     export default {
-        name: "ViolationsVideo"
+      data() {
+        return {
+          tableData: [],
+          multipleSelection: [],
+          input1:'',
+          input2:'',
+          input3:'',
+          input4:'',
+        }
+      },
+      created() {
+        this.getViolationsVideos();
+      },
+      methods: {
+        getViolationsVideos() {
+          console.log(this.input1 + "--" + this.input2 + "--" + this.input3 + "--" + this.input4);
+          this.$axios.get("http://localhost:8081/video/query", {  //params参数必写 , 如果没有参数传{}也可以
+            params: {
+              id: this.input1,
+              name: this.input2,
+              address: this.input3,
+              phone: this.input4
+            }
+          }).then(res => {
+            this.tableData = res.data.data;
+          }).catch(res => {
+            alert("出错了")
+          })
+        }
+      }
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>
