@@ -7,6 +7,7 @@
     <div class="main">
       <template>
         <div style="margin-bottom: 20px;margin-top: 20px;margin-left: 20px">
+          <el-button @click="addTag" type="success" plain style="margin-right: 20px">新增</el-button>
           <label style="margin: auto">标签名</label>
           <el-input style="width: 10%" placeholder="请输入标签名" prefix-icon="el-icon-search" v-model="name"/>
           <el-button @click="zhf" style="width: 10%;margin-left: 10px" type="primary" round>搜索</el-button>
@@ -28,6 +29,20 @@
             </template>
           </el-table-column>
         </el-table>
+
+<!--        提示框-->
+        <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" >
+          <label style="margin: auto">标签Id</label>
+          <el-input style="margin-top: auto" v-model="dialogTagId" :disabled="true"/>
+          <label style="margin-bottom: 2px">标签名</label>
+          <el-input style="margin-top: 20px" v-model="dialogTagName" />
+
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="cancelDialog">取 消</el-button>
+            <el-button type="primary" @click="saveTag">确 定</el-button>
+          </span>
+        </el-dialog>
+
       </template>
     </div>
   </div>
@@ -39,6 +54,9 @@
         return {
           tableData: [],
           multipleSelection: [],
+          dialogVisible: false,
+          dialogTagId: "",
+          dialogTagName: "",
           name:'',
         }
       },
@@ -55,41 +73,37 @@
             alert("出错了")
           })
         },
-        handleClick(e){
-          console.log(e.id+"--->"+e.name);
+        addTag(e){
+          this.dialogVisible = true;
         },
-        update() {
-          const h = this.$createElement;
-          this.$msgbox({
-            title: '消息',
-            message: h('p', null, [
-              h('span', null, '内容可以是 '),
-              h('i', { style: 'color: teal' }, 'VNode')
-            ]),
-            showCancelButton: true,
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            beforeClose: (action, instance, done) => {
-              if (action === 'confirm') {
-                instance.confirmButtonLoading = true;
-                instance.confirmButtonText = '执行中...';
-                setTimeout(() => {
-                  done();
-                  setTimeout(() => {
-                    instance.confirmButtonLoading = false;
-                  }, 300);
-                }, 3000);
-              } else {
-                done();
-              }
-            }
-          }).then(action => {
-            this.$message({
-              type: 'warn',
-              message: '出问题了'
-            });
-          });
+        update(data) {
+          this.dialogVisible = true;
+          this.dialogTagId = data.id;
+          this.dialogTagName = data.name;
+
         },
+
+        cancelDialog(){
+          this.dialogVisible = false;
+          this.dialogTagId = "";
+          this.dialogTagName = "";
+        },
+        //
+        saveTag(){
+          this.dialogVisible = false;
+          this.$axios.put("http://localhost:8081/tag/updateTag",{
+              id: this.dialogTagId,
+              name: this.dialogTagName
+          }).then(res =>{
+              //刷新页面
+             this.zhf();
+            this.dialogTagId = "";
+            this.dialogTagName = "";
+          }).catch(res =>{
+            alert("出错了");
+          })
+        },
+
 
         del(data) {
           this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
